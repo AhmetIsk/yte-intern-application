@@ -2,6 +2,7 @@ package yte.intern.spring.application.managestudents;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import yte.intern.spring.application.common.dto.MessageResponse;
 import yte.intern.spring.application.managestudents.entity.Event;
 import yte.intern.spring.application.managestudents.entity.Participant;
@@ -38,6 +39,10 @@ public class ManageEventService {
 		return eventRepository.findByNameOfEvent(nameOfEvent).map(Event::getParticipants)
 				.orElseThrow(EntityNotFoundException::new);
 	}
+
+//	public Integer getParticipantNumOfEvent(@PathVariable String nameOfEvent) {
+//		return  getEventByName(nameOfEvent).getParticipants().size();
+//	}
 
 	public MessageResponse addEvent(Event event) {
 		if(eventRepository.existsByNameOfEvent(event.getNameOfEvent())) {

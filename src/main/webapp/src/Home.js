@@ -30,10 +30,12 @@ export default function Home(props) {
     ]
 
     const [rows, updateRows] = useState([]);
+    const [rows1, updateRows1] = useState([]);
     const [isAddEventModalOpen, updateIsAddEventModalOpen] = useState(false);
     const [isUpdateEventModalOpen, updateIsUpdateEventModalOpen] = useState(false);
     const [isAddParticipantModalOpen, updateIsAddParticipantModalOpen] = useState(false);
     const [isSeeDetailsOpen, updateIsSeeDetailsOpen] = useState(false);
+    const [tempName, updateTemp] = useState();
 
     const toastOptions = {
         position: "top-right",
@@ -52,6 +54,15 @@ export default function Home(props) {
             })
     }, [])
 
+    // useEffect(() => {
+    //
+    //     const nameOfEvent =onclick(nameOfEvent);;
+    //     axios.get("/events" + nameOfEvent)
+    //         .then(response => {
+    //             updateRows1(response.data)
+    //         })
+    // }, [])
+
 
     const toggleAddEventModal = () => {
         updateIsAddEventModalOpen(!isAddEventModalOpen);
@@ -62,8 +73,33 @@ export default function Home(props) {
     const toggleUpdateEventModal = () => {
         updateIsUpdateEventModalOpen(!isUpdateEventModalOpen);
     }
+    const temp = (nameOfEvent) => {
+        let newTempName = nameOfEvent;
+        updateTemp(newTempName);
+        console.log(tempName);
+        console.log(nameOfEvent);
+        updateIsUpdateEventModalOpen(!isUpdateEventModalOpen);
+    }
+    const tempTwo = (nameOfEvent) => {
+        let newTempName = nameOfEvent;
+        updateTemp(newTempName);
+        console.log(tempName);
+        console.log(nameOfEvent);
+        updateIsAddParticipantModalOpen(!isAddParticipantModalOpen);
+    }
     const toggleSeeDetails = () => {
         updateIsSeeDetailsOpen(!isSeeDetailsOpen);
+    }
+
+
+
+    const onParticipantsShow = (nameOfEvent) => {
+        toggleSeeDetails();
+        console.log(nameOfEvent);
+        axios.get("/events/" + nameOfEvent + "/participants")
+                .then(response => {
+                    updateRows1(response.data)
+                });
     }
 
 
@@ -82,10 +118,11 @@ export default function Home(props) {
             });
     }
 
-    const onEventUpdate = (inputData, nameOfEvent) => {
+    const onEventUpdate = (inputData) => {
+        //console.log(tempName);
         toggleUpdateEventModal();
-        console.log(inputData);
-        axios.put("/events/" + nameOfEvent)
+        //console.log(inputData);
+        axios.put("/events/" + tempName, inputData)
             .then(response => {
                 console.log(response.data);
                 if (response.data.messageType === "SUCCESS") {
@@ -109,18 +146,15 @@ export default function Home(props) {
             })
     }
 
-
-// olmadı burası
-    const onAddParticipant = (nameOfEvent, inputData) => {
+    const onAddParticipant = (inputData) => {
         console.log(inputData);
-
         toggleAddParticipantModal();
-        axios.post("/events/" + nameOfEvent +"/participants", inputData)
+        axios.post("/events/" + tempName +"/participants", inputData)
             .then(response => {
                 console.log(response.data);
                 if (response.data.messageType === "SUCCESS") {
                     toast.success(response.data.message, toastOptions);
-                    updateRows([...rows, inputData]);
+                    //updateRows([...rows, inputData]);
                 } else {
                     toast.error(response.data.message, toastOptions);
                 }
@@ -133,15 +167,25 @@ export default function Home(props) {
         { label: 'End Date', id: 'endDate', type: 'date' },
         { label: 'Address', id: 'address', type: 'address', minWidth: 170 },
         { label: 'Quota of Event', id: 'maxQuota', type: 'numeric'},
-        {id: "update", label: "Update Event", align: "right", onClick: toggleUpdateEventModal},
+        {id: "update", label: "Update Event", align: "right", onClick: temp},
         {id: "delete", label: "Delete Event", align: "right", onClick: onEventDelete},
-        {id: "joinEvent", label: "Join Event", align: "right", onClick: toggleAddParticipantModal},
-        {id: "showDetails", label: "Show Details", align: "right", onClick: toggleSeeDetails}
+        {id: "joinEvent", label: "Join Event", align: "right", onClick: tempTwo},
+        {id: "showDetails", label: "Show Details", align: "right", onClick: onParticipantsShow}
     ]
 
+    // const eventData = [
+    //     { label: 'Name of Event', id: 'nameOfEvent', participantNum: 'number' },
+    //     // { year: '1960', population: 3.018 },
+    //     // { year: '1970', population: 3.682 },
+    //     // { year: '1980', population: 4.440 },
+    //     // { year: '1990', population: 5.310 },
+    //     // { year: '2000', population: 6.127 },
+    //     // { year: '2010', population: 6.930 },
+    // ];
+
     const eventData = [
-        { label: 'Name of Event', id: 'nameOfEvent', participantNum: 55 },
-        // { year: '1960', population: 3.018 },
+        { label: 'Name of Event', id: 'nameOfEvent', participantNum: 'number' },
+        // { label: 'Number', id: 'participantNum' },
         // { year: '1970', population: 3.682 },
         // { year: '1980', population: 4.440 },
         // { year: '1990', population: 5.310 },
@@ -182,11 +226,11 @@ export default function Home(props) {
             <ReactDialog fields={participantDialogFields} title="Add New Participant" isOpen={isAddParticipantModalOpen}
                          onClose={toggleAddParticipantModal}
                          onSubmit={onAddParticipant}/>
-            <ReactDialogInfo rows={rows} columns={participantDialogFields} title="Participant Details of Specified Event" isOpen={isSeeDetailsOpen}
+            <ReactDialogInfo rows={rows1} columns={participantDialogFields} title="Participant Details of Specified Event" isOpen={isSeeDetailsOpen}
                              onClose={toggleSeeDetails}/>
             <PaginationTable rows={rows} columns={eventTableColumns}/>
 
-            {open ? <MyBarChart rows={rows} columns={eventData}/> : toggleSeeDetails}
+            {open ? <MyBarChart rows={rows1} columns={eventData}/> : toggleSeeDetails}
 
             <ToastContainer rows={rows} columns={participantDialogFields} />
 

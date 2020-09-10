@@ -1,5 +1,4 @@
 import React from "react"
-import SignIn from "./SignIn";
 import history from "../../history";
 import LogInComponent from "../../LogInComponent";
 import SignInComponent from "../../SignUpComponent";

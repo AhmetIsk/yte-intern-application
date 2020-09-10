@@ -21,6 +21,7 @@ export default function MainPage(props) {
 
     const [rows, updateRows] = useState([]);
     const [isAddParticipantModalOpen, updateIsAddParticipantModalOpen] = useState(false);
+    const [tempName, updateTemp] = useState();
 
     const toastOptions = {
         position: "top-right",
@@ -39,23 +40,31 @@ export default function MainPage(props) {
             })
     }, [])
 
+
     const toggleAddParticipantModal = () => {
+        updateIsAddParticipantModalOpen(!isAddParticipantModalOpen);
+    }
+    const tempTwo = (nameOfEvent) => {
+        let newTempName = nameOfEvent;
+        updateTemp(newTempName);
+        console.log(tempName);
+        console.log(nameOfEvent);
         updateIsAddParticipantModalOpen(!isAddParticipantModalOpen);
     }
 
 
 
 // olmadı burası
-    const onAddParticipant = (nameOfEvent, inputData) => {
+    const onAddParticipant = (inputData) => {
         console.log(inputData);
 
         toggleAddParticipantModal();
-        axios.post("/events/" + nameOfEvent +"/participants", inputData)
+        axios.post("/events/" + tempName +"/participants", inputData)
             .then(response => {
                 console.log(response.data);
                 if (response.data.messageType === "SUCCESS") {
                     toast.success(response.data.message, toastOptions);
-                    updateRows([...rows, inputData]);
+                    // updateRows([...rows, inputData]);
                 } else {
                     toast.error(response.data.message, toastOptions);
                 }
@@ -68,7 +77,7 @@ export default function MainPage(props) {
         { label: 'End Date', id: 'endDate', type: 'date' },
         { label: 'Address', id: 'address', type: 'address', minWidth: 170 },
         { label: 'Quota of Event', id: 'maxQuota', type: 'numeric'},
-        {id: "joinEvent", label: "Join Event", align: "right", onClick: toggleAddParticipantModal}
+        {id: "joinEvent", label: "Join Event", align: "right", onClick: tempTwo}
     ]
 
     return (

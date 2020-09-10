@@ -38,7 +38,7 @@ export default function TableContentInfo(props) {
 
     function createTableRow(row) {
         return (
-            <TableRow hover role="checkbox" key={row.nameOfEvent}>
+            <TableRow hover role="checkbox" key={row.name}>
                 {props.columns.map(column => createTableCell(column, row))}
             </TableRow>
         );

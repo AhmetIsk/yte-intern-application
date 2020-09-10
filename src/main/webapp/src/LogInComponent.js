@@ -39,7 +39,7 @@ function LogInComponent(props) {
     const classa = useStyles();
 
     return (
-        <div className="center-page">
+        <div className="center-page" >
             <div className={classa.paper} >
                 <Avatar className={classa.avatar}>
                     <LockOutlinedIcon />
@@ -88,24 +88,25 @@ function LogInComponent(props) {
                             <Button
                                 variant="contained"
                                 color="primary"
-                                onClick={props.handleChangeClick}
+                                // onClick={props.handleChangeClick}
+                                onClick={props.loginClicked}
                                 className={classa.submit}
                                 fullWidth
                             >
                                 Log In
                             </Button>
                         </div>
-                        <div>
-                            <Link
-                                color="primary"
-                                size = "small"
-                                onClick={props.handleChangeClick2}
-                                variant="body2"
-                                className={classa.submit}
-                                href="">
-                                Don't have an account? Sign Up
-                            </Link>
-                        </div>
+                        {/*<div>*/}
+                        {/*    /!*<Link*!/*/}
+                        {/*    /!*    color="primary"*!/*/}
+                        {/*    /!*    size = "small"*!/*/}
+                        {/*    /!*    onClick={props.handleChangeClick2}*!/*/}
+                        {/*    /!*    variant="body2"*!/*/}
+                        {/*    /!*    className={classa.submit}*!/*/}
+                        {/*    /!*    href="">*!/*/}
+                        {/*    /!*    Don't have an account? Sign Up*!/*/}
+                        {/*    /!*</Link>*!/*/}
+                        {/*</div>*/}
                     </div>
                     <br />
                 </form>

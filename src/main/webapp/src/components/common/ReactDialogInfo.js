@@ -45,7 +45,7 @@ export default function ReactDialogInfo(props) {
                         <Table stickyHeader aria-label="sticky table">
                             <TableHeader columns={props.columns}/>
                             <TableContentInfo rows={props.rows} page={currentPage} rowsPerPage={rowsPerPage}
-                                          columns={props.columns} onAddParticipant={props.onAddParticipant}/>
+                                          columns={props.columns}/>
                         </Table>
                     </TableContainer>
                     <TablePageController count={props.rows.length}

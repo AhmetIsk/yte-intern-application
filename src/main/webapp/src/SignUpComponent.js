@@ -93,7 +93,7 @@ function SignUpComponent(props) {
                                 className={classa.submit}
                                 fullWidth
                             >
-                                Log In
+                                Sign Up
                             </Button>
                         </div>
                         <div>

@@ -9,12 +9,16 @@ import Button from "@material-ui/core/Button";
 export default function ReactDialog(props) {
 
   const [inputData, updateInputData] = useState({});
+  // const [nameOfEvent, updateNameOfEvent] = useState({});
 
   const handleInputChange = (event) => {
     event.persist();
     let newInputData = {...inputData};
+    // let newNameOfEvent = {...nameOfEvent};
     newInputData[event.target.id] = event.target.value;
+    // newNameOfEvent[event.target.id] = event.target.value;
     updateInputData(newInputData);
+    // updateNameOfEvent(newNameOfEvent);
   }
 
   return (
@@ -36,6 +40,7 @@ export default function ReactDialog(props) {
         </Button>
         <Button onClick={() => {
           props.onSubmit(inputData)
+           // props.onSubmit(nameOfEvent)
         }} color="primary">
           Submit
         </Button>

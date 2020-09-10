@@ -10,6 +10,9 @@ import {
 
 import { Animation } from '@devexpress/dx-react-chart';
 import {useState} from "react";
+import TableRow from "@material-ui/core/TableRow";
+import TableCell from "@material-ui/core/TableCell";
+import TableBody from "@material-ui/core/TableBody";
 
 // const data = [
 //     { label: 'Name of Event', id: 'nameOfEvent', participantNum: 55 },
@@ -35,6 +38,9 @@ export default function MyBartChart(props) {
 
     const chartData = props.columns;
 
+    const dataMe = props.rows.map(row => {props.columns.map(column => row[column.id])});
+
+
     // render() {
     //     const { data: chartData } = this.state;
 
@@ -54,6 +60,8 @@ export default function MyBartChart(props) {
                     <Animation />
                 </Chart>
             </Paper>
+
         );
     // }
 }
+

@@ -17,7 +17,7 @@ import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
+//@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" }) // sonra eklendi
 @RestController
 @RequiredArgsConstructor
 @Validated
@@ -47,6 +47,11 @@ public class ManageEventController {
 		Event event = manageEventService.getEventByName(nameOfEvent);
 		return eventMapper.mapToDto(event);
 	}
+
+//	@GetMapping("/{nameOfEvent}")
+//	public Integer getParticipantNumOfEvent(@PathVariable String nameOfEvent) {
+//		return manageEventService.getEventByName(nameOfEvent).getParticipants().size();
+//	}
 
 	@PostMapping
 	public MessageResponse addEvent(@Valid @RequestBody EventDTO eventDTO) {

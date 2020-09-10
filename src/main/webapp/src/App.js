@@ -9,14 +9,14 @@ import 'react-toastify/dist/ReactToastify.css';
 import AppBarLogin from "./components/table/AppBarLogin";
 import { Switch, Route } from "react-router-dom";
 import Home from "./Home";
-import SignIn from "./components/table/SignIn";
-import SignUp from "./components/table/SignUp";
 import LogInContainer from "./components/table/LogInContainer";
 import SignUpContainer from "./components/table/SignUpContainer";
 import MainPage from "./MainPage";
 import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
 import Box from "@material-ui/core/Box";
+import AuthenticatedRoute from "./components/table/AuthenticatedRoute";
+import InitialPage from "./InitialPage";
 
 function Copyright() {
     return (
@@ -36,14 +36,13 @@ export default function App() {
     return (
         <div className="App">
             <Switch>
-                <Route exact path='/' component={MainPage} />
+                <Route exact path='/' component={InitialPage} />
+                <Route exact path='/main' component={MainPage} />
                 <Route exact path='/login' component={LogInContainer} />
-                <Route exact path='/signUp' component={SignUpContainer} />
-                <Route exact path='/home' component={Home} />
+                {/*<Route exact path='/signUp' component={SignUpContainer} />*/}
+                <AuthenticatedRoute exact path='/home' component={Home} />
             </Switch>
-            <Box mt={8}>
                 <Copyright />
-            </Box>
         </div>
 
     );
