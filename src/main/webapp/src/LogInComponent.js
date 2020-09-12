@@ -39,7 +39,8 @@ function LogInComponent(props) {
     const classa = useStyles();
 
     return (
-        <div className="center-page" >
+        <Container component="main" maxWidth="xs">
+            <CssBaseline />
             <div className={classa.paper} >
                 <Avatar className={classa.avatar}>
                     <LockOutlinedIcon />
@@ -48,13 +49,13 @@ function LogInComponent(props) {
                     Sign in
                 </Typography>
                 <form
+                    className={classa.form} noValidate
                     style={{ backgroundColor: "#F2E5F3" }}
                     id="form_login">
                     <br />
-                    <br />
-                    <input
-                        className={classa.form}
-                        noValidate
+                    <TextField
+                        // className={classa.form}
+                        // noValidate
                         variant="outlined"
                         margin="normal"
                         required
@@ -64,12 +65,13 @@ function LogInComponent(props) {
                         value={props.data.username}
                         placeholder="username"
                         onChange={props.handleChange}
-                    >
-                    </input>
+                        autoComplete="email"
+                        autoFocus
+                    />
                     <br />
-                    <input
-                        className={classa.form}
-                        noValidate
+                    <TextField
+                        // className={classa.form}
+                        // noValidate
                         variant="outlined"
                         margin="normal"
                         required
@@ -79,8 +81,12 @@ function LogInComponent(props) {
                         value={props.data.password}
                         placeholder="password"
                         onChange={props.handleChange}
-                    >
-                    </input>
+                        autoComplete="current-password"
+                    />
+                    <FormControlLabel
+                        control={<Checkbox value="remember" color="primary" />}
+                        label="Remember me"
+                    />
                     <br />
                     <br />
                     <div className="center-page">
@@ -111,7 +117,7 @@ function LogInComponent(props) {
                     <br />
                 </form>
             </div>
-        </div>
+        </Container>
     )
 }
 export default LogInComponent;

@@ -7,6 +7,8 @@ import ReactDialog from "./components/common/ReactDialog";
 import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AppBarLogin from "./components/table/AppBarLogin";
+import QRCode from 'qrcode.react';
+import ReactDialogQR from "./components/common/ReactDialogQR";
 
 export default function MainPage(props) {
 
@@ -17,7 +19,6 @@ export default function MainPage(props) {
         {id: "tcKimlikNo", label: "TC Kimlik No", type: "text"},
     ]
 
-    let loggedIn = false;
 
     const [rows, updateRows] = useState([]);
     const [isAddParticipantModalOpen, updateIsAddParticipantModalOpen] = useState(false);
@@ -53,8 +54,6 @@ export default function MainPage(props) {
     }
 
 
-
-// olmadı burası
     const onAddParticipant = (inputData) => {
         console.log(inputData);
 
@@ -64,6 +63,7 @@ export default function MainPage(props) {
                 console.log(response.data);
                 if (response.data.messageType === "SUCCESS") {
                     toast.success(response.data.message, toastOptions);
+
                     // updateRows([...rows, inputData]);
                 } else {
                     toast.error(response.data.message, toastOptions);
@@ -85,8 +85,9 @@ export default function MainPage(props) {
             <header className="MainPage-header">
                 <AppBarLogin/>
             </header>
-            <ReactDialog fields={participantDialogFields} title="Add New Participant" isOpen={isAddParticipantModalOpen}
+            <ReactDialogQR fields={participantDialogFields} title="Add New Participant" isOpen={isAddParticipantModalOpen}
                          onClose={toggleAddParticipantModal}
+                         onShowCode={tempName}
                          onSubmit={onAddParticipant}/>
             <PaginationTable rows={rows} columns={eventTableColumns}/>
             <ToastContainer/>

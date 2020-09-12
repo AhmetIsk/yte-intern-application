@@ -29,6 +29,9 @@ public class EventDTO {
 	@Max(value = 1500, message = "Participant Quota can be maximum 1500!")
 	public final Long maxQuota;
 
+	@JsonProperty("participantNum")
+	public final Long participantNum;
+
 
 	@AssertTrue (message = "End date should be after than starting date!")
 	public boolean isBeforeStartingDate() {return endDate.isAfter(startingDate);}
@@ -39,11 +42,13 @@ public class EventDTO {
 					@JsonProperty("startingDate") LocalDate startingDate,
 					@JsonProperty("endDate") LocalDate endDate,
 					@JsonProperty("address") String address,
-					@JsonProperty("maxQuota") Long maxQuota) {
+					@JsonProperty("maxQuota") Long maxQuota,
+					@JsonProperty("participantNum") Long participantNum	) {
 		this.nameOfEvent = nameOfEvent;
 		this.endDate = endDate;
 		this.startingDate = startingDate;
 		this.address = address;
 		this.maxQuota = maxQuota;
+		this.participantNum = participantNum;
 	}
 }

@@ -54,7 +54,6 @@ export default function TableContent(props) {
 
 
   function createTableCell(column, row) {
-
     let cellValue = row[column.id];
     if (column.id === "update" || column.id === "delete" || column.id === "joinEvent" || column.id === "showDetails") {
       cellValue = createIcon(column.id, column.onClick, row.nameOfEvent);

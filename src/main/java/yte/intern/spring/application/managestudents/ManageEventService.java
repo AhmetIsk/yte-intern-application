@@ -80,6 +80,7 @@ public class ManageEventService {
 		eventFromDB.setNameOfEvent(event.getNameOfEvent());
 		eventFromDB.setStartingDate(event.getStartingDate());
 		eventFromDB.setMaxQuota(event.getMaxQuota());
+		eventFromDB.setParticipantNum(event.getParticipantNum());
 	}
 
 	public MessageResponse deleteEvent(String nameOfEvent) {
@@ -115,10 +116,12 @@ public class ManageEventService {
 			}
 			else {
 				event.getParticipants().add(participant);
+				event.setParticipantNum(Long.valueOf(participants.size()));
 				// participant.getEvents().add(event);
 				participant.setEvent(event);
 				//eventRepository.save(event);
 				participantRepository.save(participant);
+
 				return new MessageResponse(String.format("Participant with tc no %s has been added to participant successfylly!", participant.getTcKimlikNo()), SUCCESS);
 			}
 		} else {
@@ -140,6 +143,7 @@ public class ManageEventService {
 				return new MessageResponse(String.format("Event with given name %s doesn't have participant with tc no %s!", nameOfEvent, tcKimlikNo),ERROR);
 			}
 			removeParticipantFromEvent(tcKimlikNo, event);
+			event.setParticipantNum(event.getParticipantNum()-1);
 			eventRepository.save(event);
 			return new MessageResponse(String.format("Participant with tc no %s has been deleted from event successfully!", tcKimlikNo), SUCCESS);
 		}

@@ -11,14 +11,24 @@ import AppBarLogout from "./components/table/AppBarLogout";
 import ReactDialogInfo from "./components/common/ReactDialogInfo";
 import MyBarChart from "./components/table/MyBarChart";
 import {BarChart} from "@material-ui/icons";
+import ReactDialogQR from "./components/common/ReactDialogQR";
 
 export default function Home(props) {
-    const eventDialogFields = [
+    const eventDialogFieldsUpdate = [
         { label: 'Name of Event', id: 'nameOfEvent' },
         {  id: 'startingDate', type: 'date' },
         {  id: 'endDate', type: 'date' },
         { label: 'Address', id: 'address', type: 'address' },
         { label: 'Quota of Event', id: 'maxQuota', type: 'numeric'},
+        { label: 'Participant number of Event (please enter the last value)', id: 'participantNum', type: 'numeric'}
+    ]
+
+    const eventDialogFields = [
+        { label: 'Name of Event', id: 'nameOfEvent' },
+        {  id: 'startingDate', type: 'date' },
+        {  id: 'endDate', type: 'date' },
+        { label: 'Address', id: 'address', type: 'address' },
+        { label: 'Quota of Event', id: 'maxQuota', type: 'numeric'}
     ]
 
 
@@ -31,11 +41,13 @@ export default function Home(props) {
 
     const [rows, updateRows] = useState([]);
     const [rows1, updateRows1] = useState([]);
+    const [rows2, updateRows2] = useState([]);
     const [isAddEventModalOpen, updateIsAddEventModalOpen] = useState(false);
     const [isUpdateEventModalOpen, updateIsUpdateEventModalOpen] = useState(false);
     const [isAddParticipantModalOpen, updateIsAddParticipantModalOpen] = useState(false);
     const [isSeeDetailsOpen, updateIsSeeDetailsOpen] = useState(false);
     const [tempName, updateTemp] = useState();
+    const [open, setOpen] = useState(false);
 
     const toastOptions = {
         position: "top-right",
@@ -66,6 +78,16 @@ export default function Home(props) {
 
     const toggleAddEventModal = () => {
         updateIsAddEventModalOpen(!isAddEventModalOpen);
+    }
+    const toggleShowBarChart = () => {
+        setOpen(!open);
+        axios.get("/events")
+            .then(response => {
+                updateRows2(response.data)
+            });
+        console.log(rows1);
+        console.log(rows2);
+        console.log(rows);
     }
     const toggleAddParticipantModal = () => {
         updateIsAddParticipantModalOpen(!isAddParticipantModalOpen);
@@ -122,16 +144,19 @@ export default function Home(props) {
         //console.log(tempName);
         toggleUpdateEventModal();
         //console.log(inputData);
+        // updateRows(rows.filter((event) => event.nameOfEvent !== tempName));
         axios.put("/events/" + tempName, inputData)
             .then(response => {
                 console.log(response.data);
                 if (response.data.messageType === "SUCCESS") {
                     updateRows([...rows, inputData]);
+                    // updateRows([...rows, inputData]);
                     toast.success(response.data.message, toastOptions);
                 } else {
                     toast.error(response.data.message, toastOptions);
                 }
             })
+
     }
 
     const onEventDelete = (nameOfEvent) => {
@@ -184,8 +209,8 @@ export default function Home(props) {
     // ];
 
     const eventData = [
-        { label: 'Name of Event', id: 'nameOfEvent', participantNum: 'number' },
-        // { label: 'Number', id: 'participantNum' },
+        { label: 'Name of Event', id: "nameOfEvent" },
+        { label: 'Number', id: "participantNum" }
         // { year: '1970', population: 3.682 },
         // { year: '1980', population: 4.440 },
         // { year: '1990', population: 5.310 },
@@ -193,7 +218,7 @@ export default function Home(props) {
         // { year: '2010', population: 6.930 },
     ];
 
-    const [open, setOpen] = React.useState(false);
+
 
     return (
         <div className="Home">
@@ -211,7 +236,7 @@ export default function Home(props) {
             <Button variant="contained"
                     color="secondary"
                     style={{float: "right", margin: "1vw" }}
-                    onClick={() => setOpen(!open)}
+                    onClick={toggleShowBarChart}
                     startIcon={<BarChart/>}>
 
                 Show Events On Chart
@@ -220,17 +245,18 @@ export default function Home(props) {
             <ReactDialog fields={eventDialogFields} title="Add New Event" isOpen={isAddEventModalOpen}
                          onClose={toggleAddEventModal}
                          onSubmit={submitEventAdd}/>
-            <ReactDialog fields={eventDialogFields} title="Update Event" isOpen={isUpdateEventModalOpen}
+            <ReactDialog fields={eventDialogFieldsUpdate} title="Update Event" isOpen={isUpdateEventModalOpen}
                          onClose={toggleUpdateEventModal}
                          onSubmit={onEventUpdate}/>
-            <ReactDialog fields={participantDialogFields} title="Add New Participant" isOpen={isAddParticipantModalOpen}
+            <ReactDialogQR fields={participantDialogFields} title="Add New Participant" isOpen={isAddParticipantModalOpen}
                          onClose={toggleAddParticipantModal}
+                         onShowCode={tempName}
                          onSubmit={onAddParticipant}/>
             <ReactDialogInfo rows={rows1} columns={participantDialogFields} title="Participant Details of Specified Event" isOpen={isSeeDetailsOpen}
                              onClose={toggleSeeDetails}/>
-            <PaginationTable rows={rows} columns={eventTableColumns}/>
+            <PaginationTable rows={rows} columns={eventTableColumns} />
 
-            {open ? <MyBarChart rows={rows1} columns={eventData}/> : toggleSeeDetails}
+            {open ? <MyBarChart rows={rows} /> : toggleSeeDetails}
 
             <ToastContainer rows={rows} columns={participantDialogFields} />
 

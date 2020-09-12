@@ -34,6 +34,9 @@ public class Event extends BaseEntity {
 	@Column(name = "MAX_QUOTA")
 	private Long maxQuota;
 
+	@Column(name = "PARTICIPANT_NUM")
+	private Long participantNum = 0L;
+
 	@OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
 	private Set<Participant> participants;
 
